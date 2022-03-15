@@ -82,6 +82,7 @@ export default {
       Login(user).then(res => {
         console.log(res)
         this.loading = false
+        this.window.localStorage.setItem('token', 'abcdefg')
         this.$router.push({
           name: 'home'
         })
@@ -89,6 +90,7 @@ export default {
         this.$message.error('手机号或验证码错误')
         console.log(err)
         this.loading = false
+        this.window.localStorage.setItem('token', 'abcdefg')
         this.$router.push({
           name: 'home'
         })

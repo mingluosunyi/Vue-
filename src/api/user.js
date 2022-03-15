@@ -7,4 +7,11 @@ const Login = (data) => {
     data: data
   })
 }
-export { Login }
+
+const getUserProfile = () => {
+  return request({
+    method: 'POST',
+    url: '/mp/v1_0/user/profile'
+  })
+}
+export { Login, getUserProfile }
