@@ -157,7 +157,7 @@ this.$router.push({
     </el-container>
 </el-container>
 ```
-### 2-5侧边导航栏
+### 2-5 侧边导航栏
 ```javascript
 <el-menu
       default-active="2"
@@ -202,7 +202,7 @@ this.$router.push({
 侧边导航栏和路由对应：
 在menu加上router属性，item的index改为路由
 
-### 2-6获取用户数据
+### 2-6 获取用户数据
 根据API文档，需要在axios中添加请求头
 ```javascript
 headers: {
@@ -242,4 +242,51 @@ request.interceptors.request.use(
     return Promise.reject(error)
   }
 )
+```
+目前遇到的几个点：
++ props传递消息
++ 组件大小写（Vue规范）
+
+### 2-7 导航守卫
+```javascript
+router.beforeEach((to, from, next) => {
+  // 如果要访问的页面不是login，则校验登陆状态，如果没登陆则跳转到登陆页面
+  if (to.path !== '/login') {
+    const user = window.localStorage.getItem('token')
+    if (user) {
+      next()
+    } else {
+      next('/login')
+    }
+  } else {
+    next()
+  }
+})
+```
+
+### 2-8 用户退出登陆
+有些组件不支持@click绑定事件，需要使用.native
+```javascript
+<el-dropdown-item @click.native="onLogOut">退出</el-dropdown-item>
+```
+```javascript
+onLogOut () {
+      this.$confirm('确定要退出登陆吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '退出成功!'
+        })
+        window.localStorage.removeItem('token')
+        this.$router.push('/login')
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消退出'
+        })
+      })
+    }
 ```

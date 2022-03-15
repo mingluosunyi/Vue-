@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-container class="layout-container">
-      <el-aside class="aside" width="200px">
-        <app-aside class="aside-menu"/>
+      <el-aside class="aside" width="auto">
+        <app-aside class="aside-menu" :is-collapsed="isCollapsed"/>
       </el-aside>
       <el-container>
         <el-header class="header">
           <div>
-            <i class="el-icon-s-fold"></i>
+            <i :class="isCollapsed?'el-icon-s-unfold':'el-icon-s-fold'" @click="isCollapsed = !isCollapsed"></i>
             <span>ASF</span>
           </div>
           <el-dropdown>
@@ -19,7 +19,7 @@
             </div>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>设置</el-dropdown-item>
-              <el-dropdown-item>退出</el-dropdown-item>
+              <el-dropdown-item @click.native="onLogOut">退出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-header>
@@ -40,7 +40,8 @@ export default {
       user: {
         name: null,
         avatar: null
-      }
+      },
+      isCollapsed: true
     }
   },
   methods: {
@@ -56,6 +57,25 @@ export default {
           avatar: '@/assets/photo.jpeg'
         }
         console.log(err)
+      })
+    },
+    onLogOut () {
+      this.$confirm('确定要退出登陆吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '退出成功!'
+        })
+        window.localStorage.removeItem('token')
+        this.$router.push('/login')
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消退出'
+        })
       })
     }
   },

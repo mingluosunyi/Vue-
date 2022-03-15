@@ -6,6 +6,7 @@
     text-color="#fff"
     active-text-color="#ffd04b"
     router
+    :collapse="isCollapsed"
   >
     <el-menu-item index="/">
       <i class="el-icon-s-home"></i>
@@ -42,6 +43,7 @@
 
 export default {
   name: 'AppAside',
+  props: ['is-collapsed'],
   data () {
     return {
     }
